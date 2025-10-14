@@ -17,8 +17,17 @@ class TabsBloc extends Bloc<TabsEvent, TabsState> {
   FutureOr<void> GetTabsAPIEvent(
       GetTabsAPI event, Emitter<TabsState> emit) async {
     emit(TabsAPILoadingState());
-    OpenAiRes tabsAPI =
-        await TabsAPI.GetTabsAPI(event.searchText, event.queryText);
-    emit(TabsAPISuccessfullState(TabsAPI: tabsAPI));
+    try {
+      OpenAiRes? tabsAPI =
+          await TabsAPI.GetTabsAPI(event.searchText, event.queryText);
+      if (tabsAPI != null) {
+        emit(TabsAPISuccessfullState(TabsAPI: tabsAPI));
+      } else {
+        emit(TabsAPIErrorState());
+      }
+    } catch (e) {
+      print('Error in TabsBloc: $e');
+      emit(TabsAPIErrorState());
+    }
   }
 }

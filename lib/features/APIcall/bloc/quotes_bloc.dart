@@ -16,7 +16,16 @@ class QuotesBloc extends Bloc<QuotesEvent, QuotesState> {
   FutureOr<void> QuotesInitialEvent(
       GetQuotesInitial event, Emitter<QuotesState> emit) async {
     emit(QuotesLoadingState());
-    OpenAiRes quote = await QuotesRepo.GetQuotesAPI();
-    emit(QuotesSuccessfullState(quotes: quote));
+    try {
+      OpenAiRes? quote = await QuotesRepo.GetQuotesAPI();
+      if (quote != null) {
+        emit(QuotesSuccessfullState(quotes: quote));
+      } else {
+        emit(QuotesErrorState());
+      }
+    } catch (e) {
+      print('Error in QuotesBloc: $e');
+      emit(QuotesErrorState());
+    }
   }
 }

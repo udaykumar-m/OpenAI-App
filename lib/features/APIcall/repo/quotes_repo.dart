@@ -49,11 +49,19 @@ class QuotesRepo {
       final response =
           await client.post(uri, headers: headers, body: jsonString);
 
-      OpenAiRes resp = openAiResFromJson(response.body.toString());
-      // print(resp.model.toString());
-      return resp;
+      // Check if the response is successful
+      if (response.statusCode == 200) {
+        OpenAiRes resp = openAiResFromJson(response.body.toString());
+        return resp;
+      } else {
+        // Handle API errors (like missing key, rate limits, etc.)
+        throw Exception('API Error: ${response.statusCode} - ${response.body}');
+      }
     } catch (e) {
       print(e.toString());
+      rethrow; // Re-throw the exception so the bloc can handle it
+    } finally {
+      client.close();
     }
   }
 }

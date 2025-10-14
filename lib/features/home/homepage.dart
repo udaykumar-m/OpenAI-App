@@ -121,10 +121,18 @@ class _HomepageState extends State<Homepage>
             IconButton(
                 onPressed: () {
                   // PreferenceHelper.clear();
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const Favorites()));
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => const Favorites()));
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("Update in Development"),
+                      duration: Duration(seconds: 2),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
                 },
                 icon: const Icon(Icons.favorite))
           ],

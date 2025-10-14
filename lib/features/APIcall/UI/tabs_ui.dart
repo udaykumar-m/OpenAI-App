@@ -129,7 +129,11 @@ class _tabsState extends State<tabs> {
                       );
                     case TabsAPISuccessfullState:
                       final responseState = state as TabsAPISuccessfullState;
-                      copyTabText = utf8.decode((responseState.TabsAPI.choices?[0].message?.content).toString().runes.toList());
+                      copyTabText = utf8.decode(
+                          (responseState.TabsAPI.choices?[0].message?.content)
+                              .toString()
+                              .runes
+                              .toList());
                       return Container(
                         margin:
                             const EdgeInsets.only(left: 15, right: 15, top: 0),
@@ -138,14 +142,16 @@ class _tabsState extends State<tabs> {
                           children: [
                             CustomTooltip(
                               onTap: () async {
-                                await Clipboard.setData(ClipboardData(text: copyTabText));
+                                await Clipboard.setData(
+                                    ClipboardData(text: copyTabText));
                               },
                               message: 'Text copied!',
                               child: Card(
                                 child: Padding(
                                   padding: const EdgeInsets.all(10),
                                   child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       // queryText == "Meaning"
                                       //     ? Text('$queryText : ',
@@ -154,7 +160,8 @@ class _tabsState extends State<tabs> {
                                       //             fontWeight: FontWeight.bold))
                                       //     : const Text(''),
                                       Expanded(
-                                        child: Text(copyTabText,
+                                        child: Text(
+                                          copyTabText,
                                           style: const TextStyle(fontSize: 18),
                                         ),
                                       ),
@@ -181,6 +188,56 @@ class _tabsState extends State<tabs> {
                                     ),
                                     Text(
                                       "Regenerate",
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  ],
+                                ))
+                          ],
+                        ),
+                      );
+                    case TabsAPIErrorState:
+                      return Container(
+                        margin:
+                            const EdgeInsets.only(left: 15, right: 15, top: 0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              Icons.error_outline,
+                              color: Colors.red,
+                              size: 48,
+                            ),
+                            const SizedBox(height: 16),
+                            const Text(
+                              'Something went wrong',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.red,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 20),
+                            ElevatedButton(
+                                onPressed: () async {
+                                  await networkLogic();
+                                  if (_hasConnection == true) {
+                                    context.read<TabsBloc>().add(GetTabsAPI(
+                                        searchText: searchText,
+                                        queryText: queryText));
+                                  }
+                                },
+                                child: const Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(FontAwesomeIcons.rotateRight),
+                                    SizedBox(
+                                      width: 20,
+                                    ),
+                                    Text(
+                                      "Try Again",
                                       style: TextStyle(
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold),

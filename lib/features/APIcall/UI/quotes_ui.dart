@@ -73,6 +73,30 @@ class _QuotesBodyState extends State<QuotesBody> {
                     ],
                   ),
                 );
+              case QuotesErrorState:
+                return Container(
+                  margin: const EdgeInsets.only(left: 15, right: 15),
+                  child: const Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.error_outline,
+                        color: Colors.red,
+                        size: 48,
+                      ),
+                      SizedBox(height: 16),
+                      Text(
+                        'Something went wrong',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.red,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                );
               default:
                 return const SizedBox();
             }
